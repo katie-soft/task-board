@@ -1,0 +1,21 @@
+.board {
+  margin: 20px;
+}
+
+.columns-wrapper {
+  display: flex;
+}
+
+.column {
+  min-width: 300px;
+  padding: 15px;
+  border-right: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.column:first-of-type {
+  border-left: 1px solid grey;
+}

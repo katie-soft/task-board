@@ -1,12 +1,7 @@
 import "./App.css";
-import ButtonUsage from "../src/components/Button/Button";
+import Board from "./components/Board/Board";
+import { mockBoard } from "./data/mockData";
 
-function App() {
-  return (
-    <>
-      <ButtonUsage />
-    </>
-  );
+export default function App() {
+  return <Board title={mockBoard.title} data={mockBoard.data} />;
 }
-
-export default App;
