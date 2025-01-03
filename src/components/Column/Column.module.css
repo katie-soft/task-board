@@ -1,0 +1,11 @@
+.column-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+}

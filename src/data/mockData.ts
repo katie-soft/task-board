@@ -26,16 +26,12 @@ export const mockBoard: BoardProps = {
       index: 1,
       data: [
         {
-          title: 'Карточка 1',
-          text: 'Задание 1'
+          title: 'Карточка 4',
+          text: 'Задание 4'
         },
         {
-          title: 'Карточка 2',
-          text: 'Задание 2'
-        },
-        {
-          title: 'Карточка 3',
-          text: 'Задание 3'
+          title: 'Карточка 5',
+          text: 'Задание 5'
         },
       ]
     },
@@ -44,16 +40,8 @@ export const mockBoard: BoardProps = {
       index: 2,
       data: [
         {
-          title: 'Карточка 1',
-          text: 'Задание 1'
-        },
-        {
-          title: 'Карточка 2',
-          text: 'Задание 2'
-        },
-        {
-          title: 'Карточка 3',
-          text: 'Задание 3'
+          title: 'Карточка 6',
+          text: 'Задание 6'
         },
       ]
     }

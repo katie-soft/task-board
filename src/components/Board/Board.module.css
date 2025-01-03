@@ -4,15 +4,17 @@
 
 .columns-wrapper {
   display: flex;
+  align-items: flex-start;
 }
 
 .column {
   min-width: 300px;
+  min-height: 85vh;
   padding: 15px;
   border-right: 1px solid grey;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
 }
 
