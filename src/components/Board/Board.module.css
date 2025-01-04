@@ -2,13 +2,19 @@
   margin: 20px;
 }
 
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .columns-wrapper {
   display: flex;
   align-items: flex-start;
 }
 
 .column {
-  min-width: 300px;
+  width: 300px;
   min-height: 85vh;
   padding: 15px;
   border-right: 1px solid grey;
