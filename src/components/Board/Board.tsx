@@ -1,4 +1,3 @@
-import { ColumnProps } from "../Column/Column";
 import Column from "../Column/Column";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -11,11 +10,11 @@ import IconButton from "@mui/material/IconButton";
 import ColumnMenu from "../ColumnMenu/ColumnMenu";
 import ConfirmationDialog from "../ConfirmationDialog copy/ConfirmationDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { CardData } from "../../data/mockData";
+import { CardData, ColumnData } from "../../data/mockData";
 
 export type BoardProps = {
   title: string;
-  data: ColumnProps[];
+  data: ColumnData[];
 };
 
 export default function Board({ title, data }: BoardProps) {
@@ -48,6 +47,7 @@ export default function Board({ title, data }: BoardProps) {
     setConfirmationIsOpen(true);
     closeColumnMenu();
   };
+
   const closeConfirmation = () => {
     setConfirmationIsOpen(false);
   };
@@ -55,12 +55,18 @@ export default function Board({ title, data }: BoardProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const columnMenuIsOpen = Boolean(anchorEl);
 
-  const openColumnMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const openColumnMenu = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: number,
+  ) => {
     setAnchorEl(event.currentTarget);
+    setActiveColumnId(id);
   };
+
   const closeColumnMenu = () => {
     setAnchorEl(null);
   };
+
   const editColumn = () => {
     openDialog("editColumn");
     setAnchorEl(null);
@@ -69,6 +75,8 @@ export default function Board({ title, data }: BoardProps) {
   const handleSaveCustomDialog = (formData: any) => {
     if (dialogType === "addTask" && typeof activeColumnId === "number") {
       addCard(activeColumnId, formData);
+    } else if (dialogType === "addColumn") {
+      addColumn(formData.title);
     }
     closeDialog();
   };
@@ -90,6 +98,24 @@ export default function Board({ title, data }: BoardProps) {
   const viewCard = (data: CardData) => {
     setActiveCardData(data);
     openDialog("viewTask");
+  };
+
+  const addColumn = (newColumnTitle: string) => {
+    setBoardData((prevBoardData) => [
+      ...prevBoardData,
+      { title: newColumnTitle, index: boardData.length + 1, data: [] },
+    ]);
+  };
+
+  const removeColumn = () => {
+    setBoardData((prevBoardData) =>
+      prevBoardData.filter((column) => column.index !== activeColumnId),
+    );
+  };
+
+  const handleSaveConfirmation = () => {
+    removeColumn();
+    closeConfirmation();
   };
 
   return (
@@ -114,12 +140,11 @@ export default function Board({ title, data }: BoardProps) {
             }
           />
           {boardData.map((column) => (
-            <div className={styles.column}>
+            <div className={styles.column} key={column.index}>
               <Column
-                index={column.index}
                 title={column.title}
                 data={column.data}
-                onColumnClick={openColumnMenu}
+                onColumnClick={(event) => openColumnMenu(event, column.index)}
                 onCardClick={viewCard}
               />
               <Button
@@ -152,6 +177,7 @@ export default function Board({ title, data }: BoardProps) {
         text={confirmationText}
         open={confirmationIsOpen}
         handleClose={closeConfirmation}
+        handleSave={handleSaveConfirmation}
       />
     </>
   );

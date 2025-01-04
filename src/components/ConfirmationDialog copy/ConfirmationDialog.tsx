@@ -8,12 +8,14 @@ import Button from "@mui/material/Button";
 type ConfirmationDialogProps = {
   open: boolean;
   handleClose: () => void;
+  handleSave: () => void;
   text: string;
 };
 
 export default function ConfirmationDialog({
   open,
   handleClose,
+  handleSave,
   text,
 }: ConfirmationDialogProps) {
   return (
@@ -29,7 +31,7 @@ export default function ConfirmationDialog({
         <Button onClick={handleClose} color="error">
           No
         </Button>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={handleSave} autoFocus>
           Yes
         </Button>
       </DialogActions>

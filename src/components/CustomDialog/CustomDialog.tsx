@@ -81,7 +81,17 @@ export default function CustomDialog({
     <>
       <DialogTitle sx={{ mr: 6, minWidth: "300px" }}>Add column</DialogTitle>
       <DialogContent>
-        <Typography sx={{ color: "text.secondary", ml: 3 }}>Title</Typography>
+        <TextField
+          autoFocus
+          required
+          margin="dense"
+          id="title"
+          name="title"
+          label="Column Name"
+          type="text"
+          fullWidth
+          variant="standard"
+        />
       </DialogContent>
     </>
   );
@@ -121,12 +131,10 @@ export default function CustomDialog({
 
   const hasForm = type !== "viewTask";
 
-  const handleAddTaskFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries(
-      (formData as any).entries(),
-    ) as CardData;
+    const formJson = Object.fromEntries((formData as any).entries());
     handleSave && handleSave(formJson);
   };
 
@@ -135,7 +143,7 @@ export default function CustomDialog({
       open={open}
       PaperProps={{
         component: "form",
-        onSubmit: handleAddTaskFormSubmit,
+        onSubmit: handleFormSubmit,
       }}
     >
       {type && dialogContent(type)}

@@ -5,14 +5,13 @@ import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { CardData, ColumnData } from "../../data/mockData";
 
-export type ColumnProps = ColumnData & {
+export type ColumnProps = Omit<ColumnData, "index"> & {
   onColumnClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onCardClick: (data: CardData) => void;
 };
 
 export default function Column({
   title,
-  index,
   data,
   onColumnClick,
   onCardClick,
@@ -21,7 +20,6 @@ export default function Column({
     <div className={styles["column-content"]}>
       <header className={styles["column-header"]}>
         <Typography variant="h4">{title}</Typography>
-        <span>{index}</span>
         <IconButton aria-label="more" id="long-button" onClick={onColumnClick}>
           <MoreHorizIcon />
         </IconButton>
