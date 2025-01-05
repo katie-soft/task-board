@@ -7,7 +7,6 @@ import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { CardData } from "../../data/mockData";
 
 export type DialogType =
   | "addTask"
@@ -23,6 +22,8 @@ type CustomDialogProps = {
   type?: DialogType;
   taskTitle?: string;
   taskText?: string;
+  taskColumnName?: string;
+  taskImportance?: string;
 };
 
 export default function CustomDialog({
@@ -32,6 +33,8 @@ export default function CustomDialog({
   type,
   taskTitle,
   taskText,
+  taskColumnName,
+  taskImportance,
 }: CustomDialogProps) {
   const addTaskContent = (
     <>
@@ -69,8 +72,12 @@ export default function CustomDialog({
         {taskTitle}
       </DialogTitle>
       <DialogContent>
+        <Typography sx={{ color: "text.secondary" }}>Status:</Typography>
+        <Typography sx={{ mb: 1 }}>{taskColumnName}</Typography>
+        <Typography sx={{ color: "text.secondary" }}>Importance:</Typography>
+        <Typography sx={{ mb: 1 }}>{taskImportance}</Typography>
         <Typography sx={{ color: "text.secondary", mb: 1 }}>
-          Описание:
+          Description:
         </Typography>
         <Typography>{taskText}</Typography>
       </DialogContent>

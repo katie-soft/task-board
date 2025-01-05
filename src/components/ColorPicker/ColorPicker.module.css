@@ -1,0 +1,34 @@
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.selected {
+  border: 2px solid rgb(78, 78, 78);
+  box-shadow: 2px 2px 4px rgb(78, 78, 78);
+}
+
+.white {
+  background-color: #FFFFFF;
+  outline: 1px solid grey;
+}
+
+.pink {
+  background-color: var(--pink);
+}
+
+.yellow {
+  background-color: var(--yellow);
+}
+
+.green {
+  background-color: var(--green);
+}
+
+.blue {
+  background-color: var(--blue);
+}

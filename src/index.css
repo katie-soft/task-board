@@ -7,6 +7,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --pink: #F6D6D6;
+  --yellow: #F6F7C4;
+  --green: #A1EEBD;
+  --blue: #7BD3EA;
 }
 
 body {
@@ -21,3 +26,4 @@ body {
   max-width: 1280px;
   margin: 0 auto;
 }
+

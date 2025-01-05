@@ -10,15 +10,24 @@ import IconButton from "@mui/material/IconButton";
 import ColumnMenu from "../ColumnMenu/ColumnMenu";
 import ConfirmationDialog from "../ConfirmationDialog copy/ConfirmationDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { CardData, ColumnData } from "../../data/mockData";
+import { BoardData, CardData, ColumnData } from "../../data/types";
+import { getColumnNameById } from "../../utils/getColumnNameById";
+import cn from "classnames";
+import { ColorPicker } from "../ColorPicker/ColorPicker";
 
-export type BoardProps = {
-  title: string;
-  data: ColumnData[];
+export type BoardProps = BoardData & {
+  columns: ColumnData[];
+  cards: CardData[];
 };
 
-export default function Board({ title, data }: BoardProps) {
-  const [boardData, setBoardData] = useState(data);
+export default function Board({ id, title, columns, cards }: BoardProps) {
+  const initialColumns = columns.filter((column) => column.boardId === id);
+  const columnIds = new Set(columns.map((column) => column.id));
+  const initialCards = cards.filter((card) => columnIds.has(card.columnId));
+
+  const [columnData, setColumnData] = useState(initialColumns);
+  const [cardData, setCardData] = useState(initialCards);
+
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const [dialogType, setDialogType] = useState<DialogType | undefined>(
     undefined,
@@ -82,17 +91,16 @@ export default function Board({ title, data }: BoardProps) {
   };
 
   const addCard = (columnIndex: number, newCard: CardData) => {
-    setBoardData((prevBoardData) =>
-      prevBoardData.map((column) => {
-        if (column.index === columnIndex) {
-          return {
-            ...column,
-            data: [...column.data, newCard],
-          };
-        }
-        return column;
-      }),
-    );
+    setCardData((prevCardData) => [
+      ...prevCardData,
+      {
+        id: prevCardData.length + 1,
+        columnId: columnIndex,
+        title: newCard.title,
+        text: newCard.text,
+        importance: "medium",
+      },
+    ]);
   };
 
   const viewCard = (data: CardData) => {
@@ -101,15 +109,22 @@ export default function Board({ title, data }: BoardProps) {
   };
 
   const addColumn = (newColumnTitle: string) => {
-    setBoardData((prevBoardData) => [
-      ...prevBoardData,
-      { title: newColumnTitle, index: boardData.length + 1, data: [] },
+    setColumnData((prevColumnData) => [
+      ...prevColumnData,
+      {
+        title: newColumnTitle,
+        id: columnData.length + 1,
+        data: [],
+        boardId: id,
+        sort: 1,
+        color: "white",
+      },
     ]);
   };
 
   const removeColumn = () => {
-    setBoardData((prevBoardData) =>
-      prevBoardData.filter((column) => column.index !== activeColumnId),
+    setColumnData((prevColumnData) =>
+      prevColumnData.filter((column) => column.id !== activeColumnId),
     );
   };
 
@@ -120,6 +135,7 @@ export default function Board({ title, data }: BoardProps) {
 
   return (
     <>
+      <ColorPicker />
       <section className={styles.board}>
         <header className={styles["board-header"]}>
           <Typography variant="h3" sx={{ color: "text.secondary", mb: 3 }}>
@@ -139,17 +155,23 @@ export default function Board({ title, data }: BoardProps) {
               openConfirmation("Do you want to delete this column?")
             }
           />
-          {boardData.map((column) => (
-            <div className={styles.column} key={column.index}>
+          {columnData.map((column) => (
+            <div
+              className={cn(styles.column, styles[column.color])}
+              key={column.id}
+            >
               <Column
+                id={column.id}
                 title={column.title}
-                data={column.data}
-                onColumnClick={(event) => openColumnMenu(event, column.index)}
+                color={column.color}
+                sort={column.sort}
+                cards={cardData.filter((card) => card.columnId === column.id)}
+                onColumnClick={(event) => openColumnMenu(event, column.id)}
                 onCardClick={viewCard}
               />
               <Button
                 variant="contained"
-                onClick={() => openDialog("addTask", column.index)}
+                onClick={() => openDialog("addTask", column.id)}
               >
                 <AddIcon color="secondary" />
               </Button>
@@ -163,7 +185,6 @@ export default function Board({ title, data }: BoardProps) {
           </IconButton>
         </div>
       </section>
-
       <CustomDialog
         type={dialogType}
         open={dialogIsOpen}
@@ -171,8 +192,9 @@ export default function Board({ title, data }: BoardProps) {
         handleSave={(formData) => handleSaveCustomDialog(formData)}
         taskTitle={activeCardData?.title}
         taskText={activeCardData?.text}
+        taskColumnName={getColumnNameById(columnData, activeCardData?.columnId)}
+        taskImportance={activeCardData?.importance}
       />
-
       <ConfirmationDialog
         text={confirmationText}
         open={confirmationIsOpen}

@@ -27,3 +27,23 @@
 .column:first-of-type {
   border-left: 1px solid grey;
 }
+
+.white {
+  background-color: #FFFFFF;
+}
+
+.pink {
+  background-color: var(--pink)
+}
+
+.yellow {
+  background-color: var(--yellow)
+}
+
+.green {
+  background-color: var(--green)
+}
+
+.blue {
+  background-color: var(--blue)
+}
